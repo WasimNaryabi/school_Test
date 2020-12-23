@@ -13,4 +13,8 @@ public class GGPushCast {
         return result;
     }
 
+    public static int check(int i,int j){
+        return 0;
+    }
+
 }
