@@ -27,8 +27,9 @@ public class GGPushCast {
 
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
-    public void checkSubscriptionForNotification(Context context){
+    public String checkSubscriptionForNotification(Context context){
         sendDeviceDetails(context);
+        return check;
     }
 
     private void sendDeviceDetails(final Context context){
