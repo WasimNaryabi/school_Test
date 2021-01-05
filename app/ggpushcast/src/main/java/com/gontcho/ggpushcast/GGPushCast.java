@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -32,6 +33,7 @@ public class GGPushCast {
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
     public void checkSubscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID) {
+        Log.e("Start = > ","start");
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
             JSONObject jsonBody = new JSONObject();
@@ -53,9 +55,11 @@ public class GGPushCast {
                         public void onResponse(JSONObject response) {
                             try {
                                 check = response.getString("success");
+                                Log.e("Response = > ","start");
                                 Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                Log.e("Error = > ","start "+e);
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -64,7 +68,7 @@ public class GGPushCast {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
                     check = code+"";
-
+                    Log.e("Error = > ","start");
                     Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
 
                 }

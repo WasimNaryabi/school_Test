@@ -35,12 +35,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Checking");
-        progressDialog.show();
+
 
         final GGPushCast pushCast = new GGPushCast();
-        final String result = pushCast.checkSubscriptionForNotification(this,
+        pushCast.checkSubscriptionForNotification(this,
                 "cGSBv6XFLKi:APA91bH6mSHaEdB3B_r5_DXKzLwsGXxf2MrVpi33KWVflx27hNmDO_dNK0In9Eq8fBh9BTN07Ogbrmc5s0vfl__jOAJQeyFQm6W6Ru7fMKihLTi72Uh15VyieQnnykTFqVIEDdh5qZEl",
                 "Realme",
                 "RMX1821",
@@ -52,16 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 "Realme",
                 "216528704956");
 
-        new Handler().postDelayed(new Runnable() {
 
-
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                // This method will be executed once the timer is over
-                Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
-            }
-        }, 5000);
 
 
 
