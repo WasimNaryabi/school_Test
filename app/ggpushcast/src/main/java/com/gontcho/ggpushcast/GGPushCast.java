@@ -31,82 +31,66 @@ public class GGPushCast {
 
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
-    public String checkSubscriptionForNotification(Context context){
-        checkDevice(context);
-        return check;
-    }
-
-    public String subscriptionForNotification(Context context){
-        registerDevice(context);
-        return check;
-    }
-
-    private void sendDeviceDetails(final Context context){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, insertUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            check = object.getString("success");
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            check="Error";
-
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        check="Error";
-                    }
-                }){
-
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String,String>();
-                params.put("registration_token","");
-                params.put("brand","");
-                params.put("model","");
-                params.put("language_name","");
-                params.put("country_name","");
-                params.put("version_code","");
-                params.put("version_name","");
-                params.put("sdk","");
-                params.put("manufacturer","");
-                params.put("sender_id","");
-                params.put("action","");
-
-                return  params;
-            }
-
-        };
-
-        Handler.getInstance(context).addToRequestQueue(stringRequest);
-
-    }
-
-    private void checkDevice(final Context context){
+    public String checkSubscriptionForNotification(Context context,String deviceToken,String brand,String model,String language,String country,String versionCode,String versionName,String sdk,String manufacturer,String senderID) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("registration_token","cGSBv6XFLKi:APA91bH6mSHaEdB3B_r5_DXKzLwsGXxf2MrVpi33KWVflx27hNmDO_dNK0In9Eq8fBh9BTN07Ogbrmc5s0vfl__jOAJQeyFQm6W6Ru7fMKihLTi72Uh15VyieQnnykTFqVIEDdh5qZEl");
-            jsonBody.put("brand","Realme");
-            jsonBody.put("model","RMX1821");
-            jsonBody.put("language_name","English (United States)");
-            jsonBody.put("country_name","United States");
-            jsonBody.put("version_code","29");
-            jsonBody.put("version_name","Q");
-            jsonBody.put("sdk","27");
-            jsonBody.put("manufacturer","Realme");
-            jsonBody.put("sender_id","216528704956");
-            jsonBody.put("action","check");
+            jsonBody.put("registration_token", deviceToken);
+            jsonBody.put("brand", brand);
+            jsonBody.put("model", model);
+            jsonBody.put("language_name", language);
+            jsonBody.put("country_name", country);
+            jsonBody.put("version_code", versionCode);
+            jsonBody.put("version_name", versionName);
+            jsonBody.put("sdk", sdk);
+            jsonBody.put("manufacturer", manufacturer);
+            jsonBody.put("sender_id", senderID);
+            jsonBody.put("action", "check");
+
+            JsonObjectRequest request_json = new JsonObjectRequest(insertUrl, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                check = response.getString("success");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+                    int code = error.networkResponse.statusCode;
+                    check = code+"";
+                }
+
+            });
+            requestQueue.add(request_json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return check;
+    }
+
+    public String subscriptionForNotification(Context context,String deviceToken,String brand,String model,String language,String country,String versionCode,String versionName,String sdk,String manufacturer,String senderID){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("registration_token", deviceToken);
+            jsonBody.put("brand", brand);
+            jsonBody.put("model", model);
+            jsonBody.put("language_name", language);
+            jsonBody.put("country_name", country);
+            jsonBody.put("version_code", versionCode);
+            jsonBody.put("version_name", versionName);
+            jsonBody.put("sdk", sdk);
+            jsonBody.put("manufacturer", manufacturer);
+            jsonBody.put("sender_id", senderID);
+            jsonBody.put("action","");
 
             JsonObjectRequest request_json = new JsonObjectRequest(insertUrl,jsonBody,
                     new Response.Listener<JSONObject>() {
@@ -126,6 +110,7 @@ public class GGPushCast {
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
+                    check = code+"";
                 }
 
             });
@@ -133,52 +118,7 @@ public class GGPushCast {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-    }
-    private void registerDevice(final Context context){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        try {
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("registration_token","cGSBv6XFLKi:APA91bH6mSHaEdB3B_r5_DXKzLwsGXxf2MrVpi33KWVflx27hNmDO_dNK0In9Eq8fBh9BTN07Ogbrmc5s0vfl__jOAJQeyFQm6W6Ru7fMKihLTi72Uh15VyieQnnykTFqVIEDdh5qZEl");
-            jsonBody.put("brand","Realme");
-            jsonBody.put("model","RMX1821");
-            jsonBody.put("language_name","English (United States)");
-            jsonBody.put("country_name","United States");
-            jsonBody.put("version_code","29");
-            jsonBody.put("version_name","Q");
-            jsonBody.put("sdk","27");
-            jsonBody.put("manufacturer","Realme");
-            jsonBody.put("sender_id","216528704956");
-            jsonBody.put("action","check");
-
-            JsonObjectRequest request_json = new JsonObjectRequest(insertUrl,jsonBody,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-
-                                check = response.getString("success");
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.e("Error: ", error.getMessage());
-                    int code = error.networkResponse.statusCode;
-                }
-
-            });
-            requestQueue.add(request_json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
+        return check;
     }
 
 
