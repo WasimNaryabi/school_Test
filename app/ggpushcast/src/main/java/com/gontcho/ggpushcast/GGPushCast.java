@@ -13,9 +13,13 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +32,12 @@ public class GGPushCast {
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
     public String checkSubscriptionForNotification(Context context){
-        sendDeviceDetails(context);
+        checkDevice(context);
+        return check;
+    }
+
+    public String subscriptionForNotification(Context context){
+        registerDevice(context);
         return check;
     }
 
@@ -83,6 +92,94 @@ public class GGPushCast {
 
     }
 
+    private void checkDevice(final Context context){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("registration_token","cGSBv6XFLKi:APA91bH6mSHaEdB3B_r5_DXKzLwsGXxf2MrVpi33KWVflx27hNmDO_dNK0In9Eq8fBh9BTN07Ogbrmc5s0vfl__jOAJQeyFQm6W6Ru7fMKihLTi72Uh15VyieQnnykTFqVIEDdh5qZEl");
+            jsonBody.put("brand","Realme");
+            jsonBody.put("model","RMX1821");
+            jsonBody.put("language_name","English (United States)");
+            jsonBody.put("country_name","United States");
+            jsonBody.put("version_code","29");
+            jsonBody.put("version_name","Q");
+            jsonBody.put("sdk","27");
+            jsonBody.put("manufacturer","Realme");
+            jsonBody.put("sender_id","216528704956");
+            jsonBody.put("action","check");
+
+            JsonObjectRequest request_json = new JsonObjectRequest(insertUrl,jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                check = response.getString("success");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+                    int code = error.networkResponse.statusCode;
+                }
+
+            });
+            requestQueue.add(request_json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    private void registerDevice(final Context context){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("registration_token","cGSBv6XFLKi:APA91bH6mSHaEdB3B_r5_DXKzLwsGXxf2MrVpi33KWVflx27hNmDO_dNK0In9Eq8fBh9BTN07Ogbrmc5s0vfl__jOAJQeyFQm6W6Ru7fMKihLTi72Uh15VyieQnnykTFqVIEDdh5qZEl");
+            jsonBody.put("brand","Realme");
+            jsonBody.put("model","RMX1821");
+            jsonBody.put("language_name","English (United States)");
+            jsonBody.put("country_name","United States");
+            jsonBody.put("version_code","29");
+            jsonBody.put("version_name","Q");
+            jsonBody.put("sdk","27");
+            jsonBody.put("manufacturer","Realme");
+            jsonBody.put("sender_id","216528704956");
+            jsonBody.put("action","check");
+
+            JsonObjectRequest request_json = new JsonObjectRequest(insertUrl,jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                check = response.getString("success");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+                    int code = error.networkResponse.statusCode;
+                }
+
+            });
+            requestQueue.add(request_json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 }
