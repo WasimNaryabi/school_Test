@@ -32,7 +32,7 @@ public class GGPushCast {
 
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
-    public void checkSubscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID) {
+    public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String brand, final String model, final String language, final String country, final String versionCode, final String versionName, final String sdk, final String manufacturer, final String senderID) {
         Log.e("Start = > ","start");
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
@@ -67,6 +67,9 @@ public class GGPushCast {
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
+                    if(code == 404){
+                        subscriptionForNotification(context,deviceToken,brand,model,language,country,versionCode,versionName,sdk,manufacturer,senderID);
+                    }
                     check = code+"";
                     Log.e("Error = > ","start");
                     Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
@@ -81,7 +84,7 @@ public class GGPushCast {
 
     }
 
-    public String subscriptionForNotification(Context context,String deviceToken,String brand,String model,String language,String country,String versionCode,String versionName,String sdk,String manufacturer,String senderID){
+    public void subscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
             JSONObject jsonBody = new JSONObject();
@@ -104,6 +107,7 @@ public class GGPushCast {
                             try {
 
                                 check = response.getString("success");
+                                Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -115,7 +119,10 @@ public class GGPushCast {
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
-                    check = code+"";
+                    if(code == 409){
+                        Toast.makeText(context, "This Device already register", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             });
@@ -123,7 +130,7 @@ public class GGPushCast {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return check;
+
     }
 
 
