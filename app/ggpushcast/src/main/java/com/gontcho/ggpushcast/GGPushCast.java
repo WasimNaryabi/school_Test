@@ -31,7 +31,7 @@ public class GGPushCast {
 
     private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
     private String check;
-    public String checkSubscriptionForNotification(Context context,String deviceToken,String brand,String model,String language,String country,String versionCode,String versionName,String sdk,String manufacturer,String senderID) {
+    public void checkSubscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
             JSONObject jsonBody = new JSONObject();
@@ -52,12 +52,10 @@ public class GGPushCast {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-
                                 check = response.getString("success");
-
+                                Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
-
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -66,6 +64,9 @@ public class GGPushCast {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
                     check = code+"";
+
+                    Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
+
                 }
 
             });
@@ -73,7 +74,7 @@ public class GGPushCast {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return check;
+
     }
 
     public String subscriptionForNotification(Context context,String deviceToken,String brand,String model,String language,String country,String versionCode,String versionName,String sdk,String manufacturer,String senderID){
