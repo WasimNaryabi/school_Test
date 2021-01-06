@@ -27,10 +27,7 @@ public class MainActivity extends AppCompatActivity {
                 "Realme",
                 "216528704956");
 
-
-
-
-
+        pushCast.getPhoneDetails(this);
     }
 
 

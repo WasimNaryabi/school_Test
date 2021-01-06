@@ -34,9 +34,11 @@ public class GGPushCast {
 
     private String insertUrl = "https://ggpushcast.com/androidsubscribe";
     private String check;
+    private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
 
-    public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String brand, final String model, final String language, final String country, final String versionCode, final String versionName, final String sdk, final String manufacturer, final String senderID) {
+    public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String senderID) {
         Log.e("Start = > ","start");
+        getPhoneDetails();
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         try {
             JSONObject jsonBody = new JSONObject();
@@ -87,11 +89,11 @@ public class GGPushCast {
 
     }
     // Get phone information
-    public void getPhoneDetails(final Context context){
-        String phoneBrand,phoneModel,phoneManufacturer,sdk,versionName,versionCode,language,country,id,token;
-        phoneBrand = Build.BRAND;
-        phoneManufacturer = Build.MANUFACTURER;
-        phoneModel = Build.MODEL;
+    public void getPhoneDetails(){
+
+        brand = Build.BRAND;
+        manufacturer = Build.MANUFACTURER;
+        model = Build.MODEL;
         Field[] fields = Build.VERSION_CODES.class.getFields();
         versionName = "UNKNOWN";
         for (Field field : fields) {
@@ -109,8 +111,7 @@ public class GGPushCast {
         language =java.util.Locale.getDefault().getDisplayName();
         country = Locale.getDefault().getDisplayCountry();
 
-        Toast.makeText(context, "Phone Brand: "+phoneBrand+"\n Manufacture: "+phoneManufacturer+" \n Model: "+phoneModel+"\n SDK : "+sdk+"\n Version code: "+versionCode+"\n Version name: "+versionName+"\n Country Name: "+country+"\n Language "+language, Toast.LENGTH_LONG).show();
-    }
+      }
 
     public void subscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
