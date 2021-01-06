@@ -25,13 +25,16 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class GGPushCast {
 
-    private String insertUrl = "https://test.ggpushcast.com/androidsubscribe";
+    private String insertUrl = "https://ggpushcast.com/androidsubscribe";
     private String check;
+
     public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String brand, final String model, final String language, final String country, final String versionCode, final String versionName, final String sdk, final String manufacturer, final String senderID) {
         Log.e("Start = > ","start");
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -82,6 +85,31 @@ public class GGPushCast {
             e.printStackTrace();
         }
 
+    }
+    // Get phone information
+    public void getPhoneDetails(final Context context){
+        String phoneBrand,phoneModel,phoneManufacturer,sdk,versionName,versionCode,language,country,id,token;
+        phoneBrand = Build.BRAND;
+        phoneManufacturer = Build.MANUFACTURER;
+        phoneModel = Build.MODEL;
+        Field[] fields = Build.VERSION_CODES.class.getFields();
+        versionName = "UNKNOWN";
+        for (Field field : fields) {
+            try {
+                if (field.getInt(Build.VERSION_CODES.class) == Build.VERSION.SDK_INT) {
+                    versionName = field.getName();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        versionCode = Build.VERSION.RELEASE+"";
+        sdk = Build.VERSION.SDK_INT+"";
+        language =java.util.Locale.getDefault().getDisplayName();
+        country = Locale.getDefault().getDisplayCountry();
+
+        Toast.makeText(context, "Phone Brand: "+phoneBrand+"\n Manufacture: "+phoneManufacturer+" \n Model: "+phoneModel+"\n SDK : "+sdk+"\n Version code: "+versionCode+"\n Version name: "+versionName+"\n Country Name: "+country+"\n Language "+language, Toast.LENGTH_LONG).show();
     }
 
     public void subscriptionForNotification(final Context context, String deviceToken, String brand, String model, String language, String country, String versionCode, String versionName, String sdk, String manufacturer, String senderID){
