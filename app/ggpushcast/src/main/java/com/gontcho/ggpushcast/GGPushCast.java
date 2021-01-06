@@ -21,7 +21,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,12 +133,7 @@ public class GGPushCast {
 
     }
 
-    public class MyFirebaseMessagingService extends FirebaseMessagingService{
 
-        public MyFirebaseMessagingService() {
-            super();
-        }
-    }
 }
 
 
