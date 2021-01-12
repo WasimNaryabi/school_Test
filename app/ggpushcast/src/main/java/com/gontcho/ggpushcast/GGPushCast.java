@@ -69,7 +69,7 @@ public class GGPushCast {
         }
     };
 */
-    private void sendNotification(){
+    private void sendNotification(RemoteMessage remoteMessage){
 
         Log.e("Message :", "Notification is called");
         /*NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
@@ -98,10 +98,10 @@ public class GGPushCast {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(urlImage)
-                .setContentTitle(Config.title)
+                .setContentTitle(remoteMessage.getData().get("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText(Config.content)
+                .setContentText(remoteMessage.getData().get("content"))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
@@ -115,17 +115,12 @@ public class GGPushCast {
 
     public void getImage(final RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage) {
         Log.e("Message :", "Get Image is Called");
-        Map<String, String> data = remoteMessage.getData();
-        Config.title = data.get("title");
-        Config.content = data.get("content");
-        //Config.imageUrl = data.get("imageUrl");
-       // Config.gameUrl = data.get("gameUrl");
 
         this.context =context;
         this.ActivityToOpen =ActivityToOpen;
         this.urlImage = urlImage;
 
-        sendNotification();
+        sendNotification(remoteMessage);
 
         /*//Create thread to fetch image from notification
         if(remoteMessage.getData()!=null){
