@@ -54,6 +54,7 @@ public class GGPushCast {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
+            Log.e("Message :", "Calling");
             sendNotification(bitmap);
         }
 
@@ -70,7 +71,7 @@ public class GGPushCast {
 
     private void sendNotification(Bitmap bitmap){
 
-
+        Log.e("Message :", "Notification is called");
         NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
         style.bigPicture(bitmap);
 
@@ -115,7 +116,7 @@ public class GGPushCast {
 
 
     public void getImage(final RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage) {
-
+        Log.e("Message :", "Get Image is Called");
         Map<String, String> data = remoteMessage.getData();
         Config.title = data.get("title");
         Config.content = data.get("content");
@@ -134,6 +135,7 @@ public class GGPushCast {
                 @Override
                 public void run() {
                     // Get image from data Notification
+                    Log.e("Message :", "Image is loaded");
                     Picasso.get()
                             .load(Config.imageUrl)
                             .into(target);
