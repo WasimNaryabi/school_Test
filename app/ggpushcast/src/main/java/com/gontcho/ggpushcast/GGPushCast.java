@@ -1,15 +1,20 @@
 package com.gontcho.ggpushcast;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +28,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.RemoteMessage;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +42,105 @@ import java.util.Map;
 
 public class GGPushCast {
 
+    Context context;
+    Class<? extends Activity> ActivityToOpen;
+    int urlImage;
+
     private String insertUrl = "https://ggpushcast.com/androidsubscribe";
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
+
+    com.squareup.picasso.Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            sendNotification(bitmap);
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
+    private void sendNotification(Bitmap bitmap){
+
+
+        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+        style.bigPicture(bitmap);
+
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Intent intent = new Intent(context, ActivityToOpen);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,0);
+
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "101";
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_MAX);
+
+            //Configure Notification Channel
+            notificationChannel.setDescription("Game Notifications");
+            notificationChannel.enableLights(true);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(urlImage)
+                .setContentTitle(Config.title)
+                .setAutoCancel(true)
+                .setSound(defaultSound)
+                .setContentText(Config.content)
+                .setContentIntent(pendingIntent)
+                .setStyle(style)
+                .setLargeIcon(bitmap)
+                .setWhen(System.currentTimeMillis())
+                .setPriority(Notification.PRIORITY_MAX);
+
+
+        notificationManager.notify(1, notificationBuilder.build());
+
+
+    }
+
+
+    public void getImage(final RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage) {
+
+        Map<String, String> data = remoteMessage.getData();
+        Config.title = data.get("title");
+        Config.content = data.get("content");
+        Config.imageUrl = data.get("imageUrl");
+        Config.gameUrl = data.get("gameUrl");
+
+        context=this.context;
+        ActivityToOpen =this.ActivityToOpen;
+        urlImage = this.urlImage;
+
+        //Create thread to fetch image from notification
+        if(remoteMessage.getData()!=null){
+
+            Handler uiHandler = new Handler(Looper.getMainLooper());
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // Get image from data Notification
+                    Picasso.get()
+                            .load(Config.imageUrl)
+                            .into(target);
+
+                }
+            }) ;
+        }
+    }
 
     public void receiveNotification(Context context, final Class<? extends Activity> ActivityToOpen, String notificationTitle, String notificationMessage, int iconUrl){
         Intent intent = new Intent(context,ActivityToOpen);
