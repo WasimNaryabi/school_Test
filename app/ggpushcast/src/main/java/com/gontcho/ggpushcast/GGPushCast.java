@@ -53,6 +53,7 @@ public class GGPushCast {
     com.squareup.picasso.Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
             sendNotification(bitmap);
         }
 
@@ -127,7 +128,7 @@ public class GGPushCast {
 
         //Create thread to fetch image from notification
         if(remoteMessage.getData()!=null){
-
+            Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show();
             Handler uiHandler = new Handler(Looper.getMainLooper());
             uiHandler.post(new Runnable() {
                 @Override
