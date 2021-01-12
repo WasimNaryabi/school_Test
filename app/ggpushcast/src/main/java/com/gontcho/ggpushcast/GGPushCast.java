@@ -32,7 +32,6 @@ public class GGPushCast {
     private String insertUrl = "https://ggpushcast.com/androidsubscribe";
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
-
     public void sendNotification(RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage){
 
         Log.e("Message :", remoteMessage.getData().get("title"));
@@ -75,7 +74,6 @@ public class GGPushCast {
 
 
     }
-
     public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String senderID) {
         Log.e("Start = > ","start");
         getPhoneDetails();
