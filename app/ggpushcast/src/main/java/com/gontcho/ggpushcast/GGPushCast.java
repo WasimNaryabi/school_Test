@@ -123,9 +123,9 @@ public class GGPushCast {
         Config.imageUrl = data.get("imageUrl");
         Config.gameUrl = data.get("gameUrl");
 
-        context=this.context;
-        ActivityToOpen =this.ActivityToOpen;
-        urlImage = this.urlImage;
+        this.context =context;
+        this.ActivityToOpen =ActivityToOpen;
+        this.urlImage = urlImage;
 
         //Create thread to fetch image from notification
         if(remoteMessage.getData()!=null){
