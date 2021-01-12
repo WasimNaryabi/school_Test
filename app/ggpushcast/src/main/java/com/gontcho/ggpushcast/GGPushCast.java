@@ -129,13 +129,13 @@ public class GGPushCast {
 
         //Create thread to fetch image from notification
         if(remoteMessage.getData()!=null){
-            Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show();
             Handler uiHandler = new Handler(Looper.getMainLooper());
             uiHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     // Get image from data Notification
-                    Log.e("Message :", "Image is loaded");
+                   // Log.e("Message :", "Image is loaded");
                     Picasso.get()
                             .load(Config.imageUrl)
                             .into(target);
