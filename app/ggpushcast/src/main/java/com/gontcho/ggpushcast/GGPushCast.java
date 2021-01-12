@@ -50,7 +50,7 @@ public class GGPushCast {
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
 
-    com.squareup.picasso.Target target = new Target() {
+  /*  com.squareup.picasso.Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
@@ -68,12 +68,12 @@ public class GGPushCast {
 
         }
     };
-
-    private void sendNotification(Bitmap bitmap){
+*/
+    private void sendNotification(){
 
         Log.e("Message :", "Notification is called");
-        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
-        style.bigPicture(bitmap);
+        /*NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+        style.bigPicture(bitmap);*/
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -103,8 +103,6 @@ public class GGPushCast {
                 .setSound(defaultSound)
                 .setContentText(Config.content)
                 .setContentIntent(pendingIntent)
-                .setStyle(style)
-                .setLargeIcon(bitmap)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
 
@@ -120,14 +118,16 @@ public class GGPushCast {
         Map<String, String> data = remoteMessage.getData();
         Config.title = data.get("title");
         Config.content = data.get("content");
-        Config.imageUrl = data.get("imageUrl");
-        Config.gameUrl = data.get("gameUrl");
+        //Config.imageUrl = data.get("imageUrl");
+       // Config.gameUrl = data.get("gameUrl");
 
         this.context =context;
         this.ActivityToOpen =ActivityToOpen;
         this.urlImage = urlImage;
 
-        //Create thread to fetch image from notification
+        sendNotification();
+
+        /*//Create thread to fetch image from notification
         if(remoteMessage.getData()!=null){
            // Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show();
             Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -142,7 +142,7 @@ public class GGPushCast {
 
                 }
             }) ;
-        }
+        }*/
     }
 
     public void receiveNotification(Context context, final Class<? extends Activity> ActivityToOpen, String notificationTitle, String notificationMessage, int iconUrl){
