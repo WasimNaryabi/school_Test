@@ -8,70 +8,34 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.core.app.NotificationCompat;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.RemoteMessage;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+
 
 public class GGPushCast {
-
-    Context context;
-    Class<? extends Activity> ActivityToOpen;
-    int urlImage;
 
     private String insertUrl = "https://ggpushcast.com/androidsubscribe";
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
 
-  /*  com.squareup.picasso.Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Toast.makeText(context, "Image loaded", Toast.LENGTH_SHORT).show();
-            Log.e("Message :", "Calling");
-            sendNotification(bitmap);
-        }
+    public void sendNotification(RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage){
 
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
-*/
-    private void sendNotification(RemoteMessage remoteMessage){
-
-        Log.e("Message :", "Notification is called");
+        Log.e("Message :", remoteMessage.getData().get("title"));
         /*NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
         style.bigPicture(bitmap);*/
 
@@ -110,62 +74,6 @@ public class GGPushCast {
         notificationManager.notify(1, notificationBuilder.build());
 
 
-    }
-
-
-    public void getImage(final RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage) {
-        Log.e("Message :", "Get Image is Called");
-
-        this.context =context;
-        this.ActivityToOpen =ActivityToOpen;
-        this.urlImage = urlImage;
-
-        sendNotification(remoteMessage);
-
-        /*//Create thread to fetch image from notification
-        if(remoteMessage.getData()!=null){
-           // Toast.makeText(context, "Notification", Toast.LENGTH_SHORT).show();
-            Handler uiHandler = new Handler(Looper.getMainLooper());
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    // Get image from data Notification
-                   // Log.e("Message :", "Image is loaded");
-                    Picasso.get()
-                            .load(Config.imageUrl)
-                            .into(target);
-
-                }
-            }) ;
-        }*/
-    }
-
-    public void receiveNotification(Context context, final Class<? extends Activity> ActivityToOpen, String notificationTitle, String notificationMessage, int iconUrl){
-        Intent intent = new Intent(context,ActivityToOpen);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,1,
-                intent, PendingIntent.FLAG_ONE_SHOT);
-        String channelId = "123456";
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder;
-        notificationBuilder =
-                new NotificationCompat.Builder(context, channelId)
-                        .setSmallIcon(iconUrl)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationMessage)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-// Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-        notificationManager.notify(1, notificationBuilder.build());
     }
 
     public void checkSubscriptionForNotification(final Context context, final String deviceToken, final String senderID) {
