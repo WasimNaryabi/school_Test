@@ -51,7 +51,7 @@ public class GGPushCast {
             @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_MAX);
 
             //Configure Notification Channel
-            notificationChannel.setDescription("Game Notifications");
+            notificationChannel.setDescription("Notifications");
             notificationChannel.enableLights(true);
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
             notificationChannel.enableVibration(true);
@@ -64,7 +64,7 @@ public class GGPushCast {
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText(remoteMessage.getData().get("content"))
+                .setContentText(remoteMessage.getData().get("body"))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
