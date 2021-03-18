@@ -157,6 +157,7 @@ public class GGPushCast {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("registration_token", deviceToken);
             jsonBody.put("brand", brand);
+
             jsonBody.put("model", model);
             jsonBody.put("language_name", language);
             jsonBody.put("country_name", country);
