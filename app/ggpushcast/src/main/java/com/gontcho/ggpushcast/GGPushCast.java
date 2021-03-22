@@ -39,10 +39,9 @@ public class GGPushCast {
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
     public void sendNotification(RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage){
-        requestQueue =requestQueue = Volley.newRequestQueue(context);
+        requestQueue  = Volley.newRequestQueue(context);
         Log.e("Message :", remoteMessage.getData().get("title"));
-        /*NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
-        style.bigPicture(bitmap);*/
+
         responseURl ="https://ggpushcast.com/webpush_confirm_read/"+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key");
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -70,7 +69,7 @@ public class GGPushCast {
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText("Body:"+remoteMessage.getData().get("body"))
+                .setContentText("Body:"+remoteMessage.getData().get("body")+"  --> "+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key"))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
