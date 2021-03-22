@@ -14,13 +14,18 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
+
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.lang.reflect.Field;
@@ -28,16 +33,17 @@ import java.util.Locale;
 
 
 public class GGPushCast {
-
+    private RequestQueue requestQueue;
     private String insertUrl = "https://ggpushcast.com/androidsubscribe";
+    private String responseURl;
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
     public void sendNotification(RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage){
-
+        requestQueue =requestQueue = Volley.newRequestQueue(context);
         Log.e("Message :", remoteMessage.getData().get("title"));
         /*NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
         style.bigPicture(bitmap);*/
-
+        responseURl ="https://ggpushcast.com/webpush_confirm_read/"+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key");
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent intent = new Intent(context, ActivityToOpen);
@@ -46,7 +52,7 @@ public class GGPushCast {
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "101";
-
+        sendBackResponse(context);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_MAX);
 
@@ -64,7 +70,7 @@ public class GGPushCast {
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText("Body:"+remoteMessage.getData().get("body")+" Delivery id: "+remoteMessage.getData().get("delivery_id")+" Message key: "+remoteMessage.getData().get("message_key"))
+                .setContentText("Body:"+remoteMessage.getData().get("body"))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
@@ -200,7 +206,22 @@ public class GGPushCast {
 
     }
 
+    public void sendBackResponse(final Context context){
 
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, responseURl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show();
+
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
+    }
 }
 
 
