@@ -69,7 +69,7 @@ public class GGPushCast {
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText("Body:"+remoteMessage.getData().get("body")+"  --> "+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key"))
+                .setContentText("Body:"+remoteMessage.getData().get("body"))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
