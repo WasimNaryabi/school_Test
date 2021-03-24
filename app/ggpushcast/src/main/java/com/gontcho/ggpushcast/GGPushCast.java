@@ -216,7 +216,7 @@ public class GGPushCast {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonArrayRequest);
