@@ -48,6 +48,7 @@ public class GGPushCast {
         Intent intent = new Intent(context, ActivityToOpen);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("url",remoteMessage.getData().get("url"));
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,0);
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
