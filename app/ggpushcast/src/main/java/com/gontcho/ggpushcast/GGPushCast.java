@@ -104,7 +104,7 @@ public class GGPushCast {
                             try {
                                 check = response.getString("success");
                                 Log.e("Response = > ","start");
-                                Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 Log.e("Error = > ","start "+e);
@@ -120,7 +120,7 @@ public class GGPushCast {
                     }
                     check = code+"";
                     Log.e("Error = > ","start");
-                    Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
+
 
                 }
 
@@ -179,8 +179,7 @@ public class GGPushCast {
                             try {
 
                                 check = response.getString("success");
-                                Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
-
+                                Log.e("Success",check);
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -192,7 +191,8 @@ public class GGPushCast {
                     VolleyLog.e("Error: ", error.getMessage());
                     int code = error.networkResponse.statusCode;
                     if(code == 409){
-                        Toast.makeText(context, "This Device already register", Toast.LENGTH_SHORT).show();
+                        Log.e("Register","This Device already register");
+                       // Toast.makeText(context, "This Device already register", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -210,7 +210,7 @@ public class GGPushCast {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, responseURl, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show();
+                Log.e("OkMessage"," ok ");
             }
         },new Response.ErrorListener() {
             @Override
