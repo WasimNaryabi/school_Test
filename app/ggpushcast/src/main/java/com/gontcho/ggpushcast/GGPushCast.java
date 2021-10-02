@@ -35,7 +35,7 @@ import java.util.Locale;
 
 public class GGPushCast {
     private RequestQueue requestQueue;
-    private String insertUrl = "https://ggpushcast.com/androidsubscribe";
+    private String insertUrl = "http://ggpushcast.com/androidsubscribe";
     private String responseURl;
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
@@ -43,7 +43,7 @@ public class GGPushCast {
         requestQueue  = Volley.newRequestQueue(context);
         Log.e("Message :", remoteMessage.getData().get("title"));
 
-        responseURl ="https://ggpushcast.com/webpush_confirm_read/"+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key");
+        responseURl ="http://ggpushcast.com/webpush_confirm_read/"+remoteMessage.getData().get("delivery_id")+"/"+remoteMessage.getData().get("message_key");
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent intent = new Intent(context, ActivityToOpen);
