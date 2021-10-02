@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -119,7 +120,7 @@ public class GGPushCast {
                         subscriptionForNotification(context,deviceToken,brand,model,language,country,versionCode,versionName,sdk,manufacturer,senderID);
                     }
                     check = code+"";
-                    Log.e("Error = > ","start");
+                    Log.e("Error = > ",check+ " -- start -- " +error);
 
 
                 }
@@ -177,12 +178,10 @@ public class GGPushCast {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-
                                 check = response.getString("success");
                                 Log.e("Success",check);
                             } catch (JSONException e) {
                                 e.printStackTrace();
-
                             }
                         }
                     }, new Response.ErrorListener() {
