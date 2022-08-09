@@ -39,6 +39,8 @@ public class GGPushCast {
     private String responseURl;
     private String check;
     private String brand, model,  language, country,  versionCode,  versionName,  sdk,  manufacturer;
+
+    int id = 0;
     public void sendNotification(RemoteMessage remoteMessage, Context context,  Class<? extends Activity> ActivityToOpen, int urlImage){
         requestQueue  = Volley.newRequestQueue(context);
         Log.e("Message :", remoteMessage.getData().get("title"));
@@ -75,8 +77,8 @@ public class GGPushCast {
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
 
-
-        notificationManager.notify(1, notificationBuilder.build());
+        id++;
+        notificationManager.notify(id, notificationBuilder.build());
 
 
     }
